@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GRIND XL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0b0b0b;
+      color: white;
+    }
+
+    header {
+      background: #00ff88;
+      color: black;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .tabs {
+      display: flex;
+      background: #1a1a1a;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+    }
+
+    .active {
+      background: #00ff88;
+      color: black;
+      font-weight: bold;
+    }
+
+    .page {
+      display: none;
+      padding: 15px;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .card {
+      background: #1f1f1f;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #00ff88;
+      border: none;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .stat {
+      margin: 5px 0;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>⚽ GRIND XL ATHLETE APP</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">Training</div>
+  <div class="tab" onclick="switchTab(1)">Strength</div>
+  <div class="tab" onclick="switchTab(2)">Nutrition</div>
+</div>
+
+<!-- TRAINING -->
+<div class="page show">
+  <div class="card">
+    <h3>Daily Work</h3>
+    <label><input type="checkbox" class="save"> Soccer training</label>
+    <label><input type="checkbox" class="save"> Speed work</label>
+    <label><input type="checkbox" class="save"> Ball touches</label>
+  </div>
+</div>
+
+<!-- STRENGTH -->
+<div class="page">
+  <div class="card">
+    <h3>💪 Strength Tracker</h3>
+
+    <input id="bench" placeholder="Bench Press (lbs)">
+    <input id="hammer" placeholder="Hammer Curl (lbs)">
+    <input id="curl" placeholder="Dumbbell Curl (lbs)">
+    <input id="fly" placeholder="Dumbbell Fly (lbs)">
+    <input id="row" placeholder="Dumbbell Row (lbs)">
+    <input id="pushups" placeholder="Push-ups (reps)">
+    <input id="dips" placeholder="Overhead Dips (reps)">
+
+    <button onclick="saveStrength()">Save Strength</button>
+
+    <div class="stat" id="strengthStats"></div>
+  </div>
+</div>
+
+<!-- NUTRITION -->
+<div class="page">
+  <div class="card">
+    <h3>💊 Nutrition Tracker</h3>
+
+    <input id="protein" placeholder="Protein (g)">
+    <input id="calories" placeholder="Calories">
+    <input id="water" placeholder="Water (L)">
+    <input id="creatine" placeholder="Creatine (g)">
+
+    <button onclick="saveNutrition()">Save Nutrition</button>
+
+    <div class="stat" id="nutriStats"></div>
+  </div>
+</div>
+
+<script>
+  // Tabs
+  function switchTab(i) {
+    let tabs = document.querySelectorAll(".tab");
+    let pages = document.querySelectorAll(".page");
+
+    tabs.forEach(t => t.classList.remove("active"));
+    pages.forEach(p => p.classList.remove("show"));
+
+    tabs[i].classList.add("active");
+    pages[i].classList.add("show");
+  }
+
+  // Strength
+  function saveStrength() {
+    const fields = ["bench","hammer","curl","fly","row","pushups","dips"];
+
+    fields.forEach(f => {
+      localStorage.setItem(f, document.getElementById(f).value);
+    });
+
+    updateStrength();
+  }
+
+  function updateStrength() {
+    document.getElementById("strengthStats").innerText =
+      "Bench Press: " + (localStorage.getItem("bench") || 0) + " lbs\n" +
+      "Hammer Curl: " + (localStorage.getItem("hammer") || 0) + " lbs\n" +
+      "DB Curl: " + (localStorage.getItem("curl") || 0) + " lbs\n" +
+      "DB Fly: " + (localStorage.getItem("fly") || 0) + " lbs\n" +
+      "DB Row: " + (localStorage.getItem("row") || 0) + " lbs\n" +
+      "Push-ups: " + (localStorage.getItem("pushups") || 0) + " reps\n" +
+      "Overhead Dips: " + (localStorage.getItem("dips") || 0) + " reps";
+  }
+
+  // Nutrition
+  function saveNutrition() {
+    localStorage.setItem("protein", protein.value);
+    localStorage.setItem("calories", calories.value);
+    localStorage.setItem("water", water.value);
+    localStorage.setItem("creatine", creatine.value);
+    updateNutrition();
+  }
+
+  function updateNutrition() {
+    document.getElementById("nutriStats").innerText =
+      "Protein: " + (localStorage.getItem("protein") || 0) + "g\n" +
+      "Calories: " + (localStorage.getItem("calories") || 0) + "\n" +
+      "Water: " + (localStorage.getItem("water") || 0) + "L\n" +
+      "Creatine: " + (localStorage.getItem("creatine") || 0) + "g";
+  }
+
+  updateStrength();
+  updateNutrition();
+</script>
+
+</body>
+</html>
